@@ -2030,6 +2030,7 @@ function showPage(id){
 
   document.querySelectorAll(".daypill, .featpill").forEach(t=>t.classList.toggle("active", t.id==="tab-"+id));
   currentActiveId = id;
+  try{ localStorage.setItem("lastActiveId", id); }catch(e){}
 }
 
 let shopState = {};
@@ -2175,6 +2176,17 @@ SHOP_CATEGORIES.forEach((cat,ci)=> renderShopList(ci));
 renderBudget();
 fetchLiveRate();
 Object.keys(EDITABLE_LISTS).forEach(key=> renderEditableList(key));
+
+const lastActiveId = localStorage.getItem("lastActiveId");
+if(lastActiveId && lastActiveId !== "day-1" && document.getElementById(lastActiveId)){
+  document.getElementById("day-1").classList.remove("active");
+  const t1 = document.getElementById("tab-day-1");
+  if(t1) t1.classList.remove("active");
+  document.getElementById(lastActiveId).classList.add("active");
+  const tabEl = document.getElementById("tab-"+lastActiveId);
+  if(tabEl) tabEl.classList.add("active");
+  currentActiveId = lastActiveId;
+}
 
 const ARCHIVE_KEYS = ["scheduleState_v2","expenseState","customRate","isRateLocked","editableState","shopState","shopEditState","fontTier"];
 function confirmGenerateArchive(){
