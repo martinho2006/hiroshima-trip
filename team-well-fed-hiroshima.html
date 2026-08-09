@@ -1094,7 +1094,7 @@ const SHOP_CATEGORIES = [
 const EDITABLE_LISTS = {
   prep:{ tab:"準備", icon:"🧳", title:"行前準備", theme:"🧳 出發前檢查清單" },
   wish:{ tab:"敗家", icon:"💳", title:"有興趣的商品", theme:"💳 想買的東西先記下來，可以上傳照片", photoCards:true, placeholder:"例：六花亭奶油葡萄乾夾心" },
-  notes:{ tab:"隨手記", icon:"📝", title:"隨手記", theme:"📝 隨手記下旅途中的趣事，可以上傳照片", photoCards:true, timestamp:true, placeholder:"例：在宮島遇到超可愛的鹿" }
+  notes:{ tab:"隨手記", icon:"📝", title:"隨手記", theme:"📝 隨手記下旅途中的趣事，可以上傳照片", photoCards:true, timestamp:true, noProgress:true, placeholder:"例：在宮島遇到超可愛的鹿" }
 };
 
 const EXPENSE_CATEGORIES = [
@@ -1779,8 +1779,8 @@ function buildEditablePage(key){
         <div class="theme">${cfg.theme}</div>
       </div>
       <div class="cl-card">
-        <div class="cl-head"><span class="ct">完成進度</span><span class="cx" id="ed-frac-${key}">0/0</span></div>
-        <div class="cl-progress"><div class="fill" id="ed-fill-${key}" style="width:0%"></div></div>
+        ${cfg.noProgress?"":`<div class="cl-head"><span class="ct">完成進度</span><span class="cx" id="ed-frac-${key}">0/0</span></div>
+        <div class="cl-progress"><div class="fill" id="ed-fill-${key}" style="width:0%"></div></div>`}
         <div id="list-${key}"></div>
         <div class="add-row"><button class="add-btn" style="flex:1" onclick="openWishEditor('${key}')">＋ 新增項目</button></div>
       </div>
@@ -1874,8 +1874,8 @@ function renderEditableList(key){
       list.innerHTML = items.map((it, idx)=>{
         const wKey = key+"-"+idx;
         const open = !!wishExpandState[wKey];
-        return `<div class="cl-item${it.done?' done':''}${open?' expanded':''}">
-          <div class="cl-box" onclick="event.stopPropagation();toggleEditableItem('${key}',${idx})">${it.done?"✓":""}</div>
+        return `<div class="cl-item${(!cfg.noProgress&&it.done)?' done':''}${open?' expanded':''}">
+          ${cfg.noProgress?"":`<div class="cl-box" onclick="event.stopPropagation();toggleEditableItem('${key}',${idx})">${it.done?"✓":""}</div>`}
           <div class="cl-label" onclick="toggleWishExpand('${key}',${idx})">
             <div class="cl-name">${escAttr(it.text)}<span class="cl-arrow">▼</span></div>
             ${it.timestamp?`<small>${escAttr(it.timestamp)}</small>`:""}
