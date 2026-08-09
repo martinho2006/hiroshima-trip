@@ -233,6 +233,7 @@
   .cl-name .cl-arrow{font-size:0.625rem;color:var(--ink-soft);transition:transform .15s;}
   .cl-item.expanded .cl-name .cl-arrow{transform:rotate(180deg);}
   .cl-detail{font-size:0.688rem;color:var(--ink-soft);margin-top:4px;line-height:1.5;}
+  .cl-label>small{display:block;font-size:0.688rem;color:var(--ink-soft);margin-top:1px;}
   .cl-item .item-nav{margin-top:1px;}
   .ed-edit{flex:0 0 auto;color:var(--ink-soft);font-size:15px;padding:2px 4px;cursor:pointer;}
   .cl-item .ed-edit{margin-top:1px;}
@@ -369,6 +370,7 @@
     <div>
       <h1>向西走：牡蠣與桃子的夏日 —— 吃飽飽旅行團</h1>
     </div>
+    <button id="archive-btn" onclick="confirmGenerateArchive()" style="background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:999px;padding:4px 10px;font-size:0.719rem;font-weight:700;cursor:pointer;flex:0 0 auto;margin-right:6px;">📦 匯出</button>
     <button id="font-toggle-btn" onclick="toggleLargeFont()" style="background:rgba(255,255,255,.2);color:#fff;border:none;border-radius:999px;padding:4px 10px;font-size:0.719rem;font-weight:700;cursor:pointer;flex:0 0 auto;">🅰️ 一般</button>
   </div>
   <div class="tabs" id="tabs"></div>
@@ -1058,7 +1060,6 @@ const SHOP_CATEGORIES = [
     items:[
       {label:"BEAMS JAPAN 宮島店", small:"宮島岩惣1F，10:00–17:00｜①飯杓21cm/30cm(富士山設計，21cm最易完售) ②再生御朱印帳+毛巾手帕(千羽鶴再生紙) ③手工陶瓷風鈴(越智陶器) ④MIKASA護身符袋/托特包 ⑤中外陶園×BEAMS限定招財貓(視庫存)，不可網購"},
       {label:"獺祭直營店（福屋八丁堀 B1F）", small:"福屋八丁堀B1F，10:30–19:30｜廣島唯一獺祭直營店。①限定酒款「磨き二割三分」¥3,300起(全台灣少見) ②酒粕ラスク/酒粕クッキー ③一合瓶180ml方便攜帶。記得通關前check-in時放入托運"},
-      {label:"SHIRO ミナモア廣島店", small:"中國四國唯一門市，廣島駅新幹線口徒步1分"},
       {label:"BEAMS 廣島（本通）", small:"本通3-10南1F/2F，11:00–20:00｜1F女裝・2F男裝，常設以日系選品為主。夏季不定期推出鯉魚隊×BEAMS聯名T恤/托特包，上架即完售。宮島限定伴手禮請至宮島BEAMS JAPAN店購買，本通店無此款"},
       {label:"Onitsuka Tiger 鬼塚虎（本通旗艦店）", small:"本通6-8路面旗艦店｜限定鞋款Mexico 66/Gel-Lyte III/Mexico 66 SD等特殊配色，貼「廣島限定」貼紙，台灣無售，尺碼斷碼機率高，建議早點去"},
       {label:"無印良品 廣島PARCO店", small:"PARCO本館7/8F，10:00–21:00｜廣島最大型MUJI旗艦，7F生活雜貨・8F服飾。①廣島限定文具(印章系列/ご当地ノート) ②8月季節限定(夏季香氛/涼感寢具)。退稅門檻稅前¥5,000，可與岡山AEON的MUJI消費合單退稅"},
@@ -1093,8 +1094,9 @@ const SHOP_CATEGORIES = [
 ];
 
 const EDITABLE_LISTS = {
-  prep:{ tab:"準備", icon:"🧳", title:"行前準備", theme:"🧳 出發前要買/要辦的東西，記完就打勾" },
-  wish:{ tab:"敗家", icon:"💳", title:"敗家清單", theme:"💳 想買的東西先記下來，可以附一張照片方便對照", photoCards:true }
+  prep:{ tab:"準備", icon:"🧳", title:"行前準備", theme:"🧳 出發前檢查清單" },
+  wish:{ tab:"敗家", icon:"💳", title:"有興趣的商品", theme:"💳 想買的東西先記下來，可以上傳照片", photoCards:true, placeholder:"例：六花亭奶油葡萄乾夾心" },
+  notes:{ tab:"隨手記", icon:"📝", title:"隨手記", theme:"📝 隨手記下旅途中的趣事，可以上傳照片", photoCards:true, timestamp:true, placeholder:"例：在宮島遇到超可愛的鹿" }
 };
 
 const EXPENSE_CATEGORIES = [
@@ -1517,10 +1519,7 @@ function buildShopPage(){
   panel.className = "day-panel";
   panel.id = "page-shop";
   let html = `<div class="day-head">
-      <div class="date">附錄</div>
-      <div class="route">購物核心檢核清單</div>
-      <div class="theme">🛍️ 點一下打勾記錄已買過，📍導航、✎編輯/新增/刪除店家（存在手機裡，關掉網頁不會消失）</div>
-      <div class="theme">💡 退稅門檻：一般物品與消耗品皆為稅前 ¥5,000 以上（電器與服飾同一標準，無額外門檻），攜帶護照至各店服務台辦理</div>
+      <div class="route">商店清單</div>
     </div>`;
 
   SHOP_CATEGORIES.forEach((cat, ci)=>{
@@ -1547,11 +1546,9 @@ function buildBudgetPage(){
   panel.id = "page-budget";
   panel.innerHTML = `
     <div class="day-head">
-      <div class="date">附錄</div>
       <div class="route">記帳與日幣匯率換算</div>
-      <div class="theme">💱 隨手試算購物台幣金額、記錄旅途中的各項花費</div>
     </div>
-    
+
     <div class="calc-card">
       <div class="calc-head">
         <div class="calc-title"><span>💱</span> 日幣 ↔ 台幣 匯率換算 <small id="rate-status-tag" style="font-size:0.625rem;font-weight:400;color:var(--ink-soft);background:var(--accent-soft);padding:2px 6px;border-radius:4px;">即時更新</small></div>
@@ -1592,6 +1589,7 @@ function buildBudgetPage(){
       <div class="bv" id="budget-total-val">¥0 <small style="font-size:0.875rem;font-weight:600;opacity:.8" id="budget-twd-val">（約 NT$ 0）</small></div>
     </div>
     <div class="cl-card"><div id="expense-list"></div></div>
+
     <button class="fab" onclick="openExpenseEditor()" title="記一筆">＋</button>
   `;
   return panel;
@@ -1779,7 +1777,6 @@ function buildEditablePage(key){
   if(cfg.photoCards){
     panel.innerHTML = `
       <div class="day-head">
-        <div class="date">附錄</div>
         <div class="route">${cfg.title}</div>
         <div class="theme">${cfg.theme}</div>
       </div>
@@ -1795,7 +1792,6 @@ function buildEditablePage(key){
 
   panel.innerHTML = `
     <div class="day-head">
-      <div class="date">附錄</div>
       <div class="route">${cfg.title}</div>
       <div class="theme">${cfg.theme}</div>
     </div>
@@ -1884,6 +1880,7 @@ function renderEditableList(key){
           <div class="cl-box" onclick="event.stopPropagation();toggleEditableItem('${key}',${idx})">${it.done?"✓":""}</div>
           <div class="cl-label" onclick="toggleWishExpand('${key}',${idx})">
             <div class="cl-name">${escAttr(it.text)}<span class="cl-arrow">▼</span></div>
+            ${it.timestamp?`<small>${escAttr(it.timestamp)}</small>`:""}
             ${open?`<div class="cl-detail">${it.photo?`<img class="wish-thumb" src="${it.photo}" onclick="event.stopPropagation();openLightbox(this.src)"/>`:`<div class="wish-nophoto">尚無照片，點 ✎ 新增</div>`}</div>`:""}
           </div>
           <span class="ed-edit" onclick="event.stopPropagation();openWishEditor('${key}',${idx})" title="編輯">✎</span>
@@ -1956,7 +1953,7 @@ function openWishEditor(key, idx){
   const item = isNew ? {text:"", photo:null} : editableState[key][idx];
   openModal(`
     <h3>${isNew?"新增項目":"編輯項目"}</h3>
-    <div class="modal-field"><label>名稱</label><input id="mf-wish-name" value="${escAttr(item.text)}" placeholder="例：六花亭奶油葡萄乾夾心"/></div>
+    <div class="modal-field"><label>名稱</label><input id="mf-wish-name" value="${escAttr(item.text)}" placeholder="${escAttr(EDITABLE_LISTS[key].placeholder||"")}"/></div>
     ${item.photo?`<div class="modal-field"><label>目前照片</label><img src="${item.photo}" style="max-width:120px;max-height:120px;border-radius:8px;display:block;object-fit:cover;"/></div>`:""}
     <div class="modal-field"><label>${item.photo?"更換照片（可不選，留空維持原照片）":"照片（可不選）"}</label><input id="mf-wish-photo" type="file" accept="image/*"/></div>
     <div class="modal-btns">
@@ -1973,7 +1970,11 @@ function saveWishItem(key, idx){
   const file = document.getElementById("mf-wish-photo").files[0];
   const finish = (photo)=>{
     if(idx===null || idx===undefined){
-      editableState[key].push({text:name, done:false, photo:photo||null});
+      const newItem = {text:name, done:false, photo:photo||null};
+      if(EDITABLE_LISTS[key].timestamp){
+        newItem.timestamp = new Date().toLocaleString('zh-TW',{month:'numeric',day:'numeric',hour:'2-digit',minute:'2-digit'});
+      }
+      editableState[key].push(newItem);
     } else {
       const existing = editableState[key][idx];
       existing.text = name;
@@ -2174,6 +2175,35 @@ SHOP_CATEGORIES.forEach((cat,ci)=> renderShopList(ci));
 renderBudget();
 fetchLiveRate();
 Object.keys(EDITABLE_LISTS).forEach(key=> renderEditableList(key));
+
+const ARCHIVE_KEYS = ["scheduleState_v2","expenseState","customRate","isRateLocked","editableState","shopState","shopEditState","fontTier"];
+function confirmGenerateArchive(){
+  if(confirm("將把記帳、購物清單、敗家清單、隨手記、行前準備等所有資料連同照片，打包成一個可離線開啟的備份檔案，確定要產生嗎？")){
+    generateArchive();
+  }
+}
+function generateArchive(){
+  fetch(location.href).then(res=>res.text()).then(html=>{
+    const snapshot = {};
+    ARCHIVE_KEYS.forEach(k=>{
+      const v = localStorage.getItem(k);
+      if(v !== null) snapshot[k] = v;
+    });
+    const seedScript = `<script>(function(){var S=${JSON.stringify(snapshot)};for(var k in S){if(localStorage.getItem(k)===null){try{localStorage.setItem(k,S[k]);}catch(e){}}}})();<\/script>`;
+    const archived = html.replace("<head>", "<head>\n"+seedScript);
+    const blob = new Blob([archived], {type:"text/html"});
+    const url = URL.createObjectURL(blob);
+    const d = new Date();
+    const dateStr = d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = `吃飽飽旅行團-完整封存-${dateStr}.html`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }).catch(()=>{ alert("封存失敗，請確認網路連線後再試一次"); });
+}
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", () => {
