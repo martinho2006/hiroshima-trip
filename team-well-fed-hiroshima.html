@@ -207,6 +207,9 @@
   .resto h4{margin:0 0 8px;font-size:0.875rem;}
   .resto ul{margin:0;padding-left:0;list-style:none;}
   .resto li{font-size:0.813rem;line-height:1.6;margin-bottom:7px;display:flex;gap:7px;}
+  .item-num{flex:0 0 auto;display:flex;align-items:center;justify-content:center;width:20px;height:20px;
+    border-radius:50%;background:var(--accent-tint);color:var(--pill);font-weight:800;font-size:0.688rem;margin-top:1px;}
+  .item-num-text{flex:1;min-width:0;}
   .item-nav{flex-shrink:0;text-decoration:none;opacity:.85;}
   .item-nav:hover{opacity:1;}
 
@@ -506,21 +509,21 @@ const DAYS = [
           items:[
             "📌 什麼是「彌山七不思議」？ —— 西元 806 年真言宗開祖弘法大師（空海）來到宮島最高峰「彌山（標高 535m）」修行 100 天，開基求法並留下了 7 個帶有自然與密教超自然色彩的神秘現象。如今現場看得到的有 4 個，另有 3 個傳說隨著歲月變遷已枯萎消失。",
             "【📜 歷史與文化 - 成人版】",
-            "1. 消えずの火（不滅之火）【⚠️ 圍籬修繕中】 —— 西元 806 年弘法大師點燃，1200 年未曾熄滅，亦為廣島和平公園「和平之火」源頭。堂內大黑鍋煮著靈水，傳說喝了能祛病。2024/5 大殿火災，1200 年火種已安全救出，於旁邊臨時場所繼續燃燒保管。",
-            "2. 干滿岩【🌟 現場看得到】 —— 海拔約 500m 山頂花崗岩巨石洞穴（深 27cm），洞內積水終年不乾涸，且水位會與遠方海潮（滿潮/干潮）同步漲落，水質帶鹹味，科學家至今無法解釋。",
-            "3. 錫杖の梅【🌟 現場看得到】 —— 位於靈火堂旁庭院，傳說弘法大師將金屬手杖立於地中生根發芽成梅樹。若宮島發生凶兆，那一年梅樹便不開花。",
-            "4. 曼荼羅岩【🌟 現場看得到】 —— 位於彌山本堂正後方花崗岩巨石上，刻有弘法大師留下的梵字真言與經文。",
-            "5. 三鬼堂與天狗の拍子木【🌟 現場看得到】 —— 三鬼堂為天狗信仰總本社，供奉三尊鬼神。古時深夜山林常傳出天狗敲擊木板「叩叩叩」響聲，但夜間探查找不到人。",
-            "6. 時雨櫻【🌫️ 歲月消逝看不到了】 —— 過去山上的一株櫻花樹，即便大晴天無雲，樹下仍像下陣雨般滴落水滴。後來樹木枯死不復存在。",
-            "7. 龍燈の杉【🌫️ 歲月消逝看不到了】 —— 古時山頂大杉樹，每年除夕深夜，海邊龍神會向大樹發射青色神光照亮海面。後來大樹不復存在。",
+            "<span class='item-num'>1</span><span class='item-num-text'>消えずの火（不滅之火）【⚠️ 圍籬修繕中】 —— 西元 806 年弘法大師點燃，1200 年未曾熄滅，亦為廣島和平公園「和平之火」源頭。堂內大黑鍋煮著靈水，傳說喝了能祛病。2024/5 大殿火災，1200 年火種已安全救出，於旁邊臨時場所繼續燃燒保管。</span>",
+            "<span class='item-num'>2</span><span class='item-num-text'>干滿岩【🌟 現場看得到】 —— 海拔約 500m 山頂花崗岩巨石洞穴（深 27cm），洞內積水終年不乾涸，且水位會與遠方海潮（滿潮/干潮）同步漲落，水質帶鹹味，科學家至今無法解釋。</span>",
+            "<span class='item-num'>3</span><span class='item-num-text'>錫杖の梅【🌟 現場看得到】 —— 位於靈火堂旁庭院，傳說弘法大師將金屬手杖立於地中生根發芽成梅樹。若宮島發生凶兆，那一年梅樹便不開花。</span>",
+            "<span class='item-num'>4</span><span class='item-num-text'>曼荼羅岩【🌟 現場看得到】 —— 位於彌山本堂正後方花崗岩巨石上，刻有弘法大師留下的梵字真言與經文。</span>",
+            "<span class='item-num'>5</span><span class='item-num-text'>三鬼堂與天狗の拍子木【🌟 現場看得到】 —— 三鬼堂為天狗信仰總本社，供奉三尊鬼神。古時深夜山林常傳出天狗敲擊木板「叩叩叩」響聲，但夜間探查找不到人。</span>",
+            "<span class='item-num'>6</span><span class='item-num-text'>時雨櫻【🌫️ 歲月消逝看不到了】 —— 過去山上的一株櫻花樹，即便大晴天無雲，樹下仍像下陣雨般滴落水滴。後來樹木枯死不復存在。</span>",
+            "<span class='item-num'>7</span><span class='item-num-text'>龍燈の杉【🌫️ 歲月消逝看不到了】 —— 古時山頂大杉樹，每年除夕深夜，海邊龍神會向大樹發射青色神光照亮海面。後來大樹不復存在。</span>",
             "【🎒 趣味解密 - 小學生版】",
-            "1. 消えずの火（不滅之火）【⚠️ 圍籬修繕中】 —— 1200 年沒熄滅過的火！連 2024 年發生大火時，都被勇敢的僧侶叔叔抱出來保護好了。",
-            "2. 干滿岩【🌟 現場看得到】 —— 明明爬山到了山頂，石頭小洞裡的水位竟然會跟遠方的大海同步漲退潮。",
-            "3. 錫杖の梅【🌟 現場看得到】 —— 拐杖插進土裡發芽變成的梅樹！只要有壞事要發生，它那一年就不開花。",
-            "4. 曼荼羅岩【🌟 現場看得到】 —— 千年前和尚刻在大石頭上的經文梵字，歷經風吹雨打依然清清楚楚。",
-            "5. 三鬼堂與天狗の拍子木【🌟 現場看得到】 —— 三個鬼神各有超能力（發財/變聰明/打怪），大半夜山裡還會傳出天狗打節奏的聲音。",
-            "6. 時雨櫻【🌫️ 歲月消逝看不到了】 —— 以前大晴天站在這棵樹下會像下雨一樣滴水，可惜很久以前樹木已經枯死消失了。",
-            "7. 龍燈の杉【🌫️ 歲月消逝看不到了】 —— 很久很久以前的除夕大年夜，海裡的龍神會傳送藍色光束給山頂的大樹。"
+            "<span class='item-num'>1</span><span class='item-num-text'>消えずの火（不滅之火）【⚠️ 圍籬修繕中】 —— 1200 年沒熄滅過的火！連 2024 年發生大火時，都被勇敢的僧侶叔叔抱出來保護好了。</span>",
+            "<span class='item-num'>2</span><span class='item-num-text'>干滿岩【🌟 現場看得到】 —— 明明爬山到了山頂，石頭小洞裡的水位竟然會跟遠方的大海同步漲退潮。</span>",
+            "<span class='item-num'>3</span><span class='item-num-text'>錫杖の梅【🌟 現場看得到】 —— 拐杖插進土裡發芽變成的梅樹！只要有壞事要發生，它那一年就不開花。</span>",
+            "<span class='item-num'>4</span><span class='item-num-text'>曼荼羅岩【🌟 現場看得到】 —— 千年前和尚刻在大石頭上的經文梵字，歷經風吹雨打依然清清楚楚。</span>",
+            "<span class='item-num'>5</span><span class='item-num-text'>三鬼堂與天狗の拍子木【🌟 現場看得到】 —— 三個鬼神各有超能力（發財/變聰明/打怪），大半夜山裡還會傳出天狗打節奏的聲音。</span>",
+            "<span class='item-num'>6</span><span class='item-num-text'>時雨櫻【🌫️ 歲月消逝看不到了】 —— 以前大晴天站在這棵樹下會像下雨一樣滴水，可惜很久以前樹木已經枯死消失了。</span>",
+            "<span class='item-num'>7</span><span class='item-num-text'>龍燈の杉【🌫️ 歲月消逝看不到了】 —— 很久很久以前的除夕大年夜，海裡的龍神會傳送藍色光束給山頂的大樹。</span>"
           ]
         }},
       {time:"12:10–12:40", icon:"⛰️", title:"攻頂奇岩區 (彌山展望台)", transit:"纜車下山15m", note:"• <b>奇觀打卡：</b>經過奇石拱門與干滿岩（潮汐奇岩），抵達 360° 展望台觀賞瀨戶內海全景<br/>• <b>下山建議：</b>建議原路搭纜車下山，保留體力避開午後排隊人潮"},
@@ -1186,87 +1189,6 @@ function getEffectiveSchedule(d){
   return combined;
 }
 
-function moveScheduleItem(dayId, itemId, dir){
-  const d = DAYS.find(x=>x.id===dayId);
-  let list = getEffectiveSchedule(d);
-  const idx = list.findIndex(s=>s._id===itemId);
-  if(idx === -1) return;
-  const targetIdx = idx + dir;
-  if(targetIdx < 0 || targetIdx >= list.length) return;
-  const temp = list[idx];
-  list[idx] = list[targetIdx];
-  list[targetIdx] = temp;
-  const st = dayState(dayId);
-  st.customOrder = list.map(s=>s._id);
-  saveScheduleState();
-  rerenderDay(dayId);
-}
-
-function openScheduleEditor(dayId, itemId){
-  const d = DAYS.find(x=>x.id===dayId);
-  const list = getEffectiveSchedule(d);
-  const isNew = !itemId;
-  const item = isNew ? {time:"",icon:"📌",title:"",note:"",transit:""} : (list.find(s=>s._id===itemId) || {time:"",icon:"📌",title:"",note:"",transit:""});
-  openModal(`
-    <h3>${isNew?"新增行程卡片":"編輯行程卡片"}</h3>
-    <div class="modal-row">
-      <div class="modal-field"><label>時間</label><input id="mf-time" value="${escAttr(item.time)}" placeholder="例：10:00–11:00"/></div>
-      <div class="modal-field" style="max-width:64px;flex:0 0 64px;"><label>圖示</label><input id="mf-icon" value="${escAttr(item.icon)}" placeholder="📌"/></div>
-    </div>
-    <div class="modal-field"><label>標題</label><input id="mf-title" value="${escAttr(item.title)}"/></div>
-    <div class="modal-field"><label>移動連線備註（如 🚌 30m）</label><input id="mf-transit" value="${escAttr(item.transit||"")}"/></div>
-    <div class="modal-field"><label>備註內容</label><textarea id="mf-note">${item.note||""}</textarea></div>
-    <div class="modal-btns">
-      <button class="mbtn-cancel" onclick="closeModal()">取消</button>
-      ${isNew?"":`<button class="mbtn-delete" onclick="deleteScheduleItem(${dayId},'${itemId}')">刪除</button>`}
-      <button class="mbtn-save" onclick="saveScheduleItem(${dayId}, ${isNew?"null":`'${itemId}'`})">儲存</button>
-    </div>
-  `);
-}
-
-function saveScheduleItem(dayId, itemId){
-  const time = document.getElementById("mf-time").value.trim();
-  const icon = document.getElementById("mf-icon").value.trim() || "📌";
-  const title = document.getElementById("mf-title").value.trim();
-  const transit = document.getElementById("mf-transit").value.trim();
-  const note = document.getElementById("mf-note").value.trim();
-  if(!title){ alert("請輸入標題"); return; }
-  const st = dayState(dayId);
-  if(itemId===null){
-    st.added.push({_id:"u"+Date.now(), time, icon, title, note, transit});
-  } else if(itemId.indexOf("b")===0){
-    st.overrides[itemId] = {time, icon, title, note, transit};
-  } else {
-    const a = st.added.find(x=>x._id===itemId);
-    if(a){ a.time=time; a.icon=icon; a.title=title; a.note=note; a.transit=transit; }
-  }
-  saveScheduleState();
-  closeModal();
-  rerenderDay(dayId);
-}
-
-function deleteScheduleItem(dayId, itemId){
-  const st = dayState(dayId);
-  if(itemId.indexOf("b")===0){
-    st.deleted.push(itemId);
-  } else {
-    st.added = st.added.filter(x=>x._id!==itemId);
-  }
-  saveScheduleState();
-  closeModal();
-  rerenderDay(dayId);
-}
-
-function rerenderDay(dayId){
-  const d = DAYS.find(x=>x.id===dayId);
-  const old = document.getElementById("day-"+dayId);
-  if(!old) return;
-  const wasActive = old.classList.contains("active");
-  const fresh = buildDay(d);
-  if(wasActive) fresh.classList.add("active");
-  old.replaceWith(fresh);
-}
-
 function buildTabs(){
   const tabs = document.getElementById("tabs");
   tabs.innerHTML = "";
@@ -1472,8 +1394,6 @@ function buildDay(d){
     }
   });
   html += `</div>`;
-
-  html += `<button class="fab" onclick="openScheduleEditor(${d.id}, null)" title="新增行程卡片">＋</button>`;
 
   if(d.tables){
     d.tables.forEach(t=>{
