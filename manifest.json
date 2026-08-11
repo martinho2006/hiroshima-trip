@@ -1,0 +1,24 @@
+{
+  "name": "向西走：牡蠣與桃子的夏日",
+  "short_name": "吃飽飽旅行團",
+  "start_url": "team-well-fed-hiroshima.html",
+  "scope": ".",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#12161d",
+  "theme_color": "#12161d",
+  "icons": [
+    {
+      "src": "https://martinho2006.github.io/hiroshima-trip/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://martinho2006.github.io/hiroshima-trip/icon.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
