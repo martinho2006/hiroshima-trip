@@ -240,6 +240,9 @@
   .cl-item .item-nav{margin-top:1px;}
   .ed-edit{flex:0 0 auto;color:var(--ink-soft);font-size:15px;padding:2px 4px;cursor:pointer;}
   .cl-item .ed-edit{margin-top:1px;}
+  .cl-move{flex:0 0 auto;display:flex;flex-direction:column;gap:2px;margin-top:1px;}
+  .cl-move-btn{font-size:11px;line-height:1;color:var(--ink-soft);cursor:pointer;padding:1px 3px;}
+  .cl-move-btn.disabled{opacity:.25;pointer-events:none;}
 
   .calc-card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:14px;margin-bottom:14px;}
   .calc-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
@@ -1098,7 +1101,7 @@ const SHOP_CATEGORIES = [
 
 const EDITABLE_LISTS = {
   prep:{ tab:"準備", icon:"🧳", title:"行前準備", theme:"🧳 出發前檢查清單" },
-  wish:{ tab:"敗家", icon:"💳", title:"有興趣的商品", theme:"💳 想買的東西先記下來，可以上傳照片", photoCards:true, placeholder:"例：六花亭奶油葡萄乾夾心" },
+  wish:{ tab:"敗家", icon:"💳", title:"有興趣的商品", theme:"💳 想買的東西先記下來，可以上傳照片", photoCards:true, sortable:true, placeholder:"例：六花亭奶油葡萄乾夾心" },
   notes:{ tab:"隨手記", icon:"📝", title:"隨手記", theme:"📝 隨手記下旅途中的趣事，可以上傳照片", photoCards:true, timestamp:true, noProgress:true, placeholder:"例：在宮島遇到超可愛的鹿" }
 };
 
@@ -1793,10 +1796,24 @@ function renderEditableList(key){
     if(!items.length){
       list.innerHTML = `<div class="ed-empty">還沒有項目，點下面「＋新增項目」開始記錄</div>`;
     } else {
-      list.innerHTML = items.map((it, idx)=>{
+      let displayIdxs = items.map((_,i)=>i);
+      if(cfg.sortable){
+        displayIdxs = displayIdxs.slice().sort((a,b)=> (items[a].done?1:0)-(items[b].done?1:0));
+      }
+      const firstDoneP = displayIdxs.findIndex(i=>items[i].done);
+      list.innerHTML = displayIdxs.map((idx,pos)=>{
+        const it = items[idx];
         const wKey = key+"-"+idx;
         const open = !!wishExpandState[wKey];
+        const atTop = pos===0;
+        const atBottom = pos===displayIdxs.length-1;
+        const atGroupBoundaryDown = firstDoneP!==-1 && pos===firstDoneP-1;
+        const atGroupBoundaryUp = firstDoneP!==-1 && pos===firstDoneP;
         return `<div class="cl-item${(!cfg.noProgress&&it.done)?' done':''}${open?' expanded':''}">
+          ${cfg.sortable?`<div class="cl-move">
+            <span class="cl-move-btn${(atTop||atGroupBoundaryUp)?' disabled':''}" onclick="event.stopPropagation();moveWishItem('${key}',${pos},-1)">▲</span>
+            <span class="cl-move-btn${(atBottom||atGroupBoundaryDown)?' disabled':''}" onclick="event.stopPropagation();moveWishItem('${key}',${pos},1)">▼</span>
+          </div>`:""}
           ${cfg.noProgress?"":`<div class="cl-box" onclick="event.stopPropagation();toggleEditableItem('${key}',${idx})">${it.done?"✓":""}</div>`}
           <div class="cl-label" onclick="toggleWishExpand('${key}',${idx})">
             <div class="cl-name">${escAttr(it.text)}<span class="cl-arrow">▼</span></div>
@@ -1854,6 +1871,23 @@ function resizeImageFile(file, maxDim, cb){
 }
 
 let wishExpandState = {};
+function moveWishItem(key, pos, dir){
+  const items = editableState[key];
+  const cfg = EDITABLE_LISTS[key];
+  let displayIdxs = items.map((_,i)=>i);
+  if(cfg.sortable){
+    displayIdxs = displayIdxs.slice().sort((a,b)=> (items[a].done?1:0)-(items[b].done?1:0));
+  }
+  const newPos = pos + dir;
+  if(newPos < 0 || newPos >= displayIdxs.length) return;
+  const tmp = displayIdxs[pos];
+  displayIdxs[pos] = displayIdxs[newPos];
+  displayIdxs[newPos] = tmp;
+  editableState[key] = displayIdxs.map(i=>items[i]);
+  saveEditableState();
+  renderEditableList(key);
+}
+
 function toggleWishExpand(key, idx){
   const wKey = key+"-"+idx;
   wishExpandState[wKey] = !wishExpandState[wKey];
