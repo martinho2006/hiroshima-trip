@@ -84,6 +84,7 @@
 
   .day-head{margin:4px 2px 14px;}
   .day-head .date{font-size:0.813rem;color:var(--ink-soft);font-weight:600;}
+  .day-head .weather-inline{color:var(--ink-soft);font-weight:600;font-size:0.813rem;}
   .day-head .route{font-size:1.188rem;font-weight:800;margin-top:2px;line-height:1.3;}
   .day-head .theme{margin-top:8px;background:var(--accent-soft);color:var(--pill);
     padding:9px 12px;border-radius:12px;font-size:0.813rem;font-weight:600;line-height:1.5;}
@@ -382,12 +383,13 @@
 
 <main id="main"></main>
 
-<footer class="note">此頁為離線卡片版，行程時間僅供參考，實際搭乘請以當下 Google Maps／官方即時資訊為準。</footer>
+<footer class="note">此頁為離線卡片版，行程時間僅供參考，實際搭乘請以當下 Google Maps／官方即時資訊為準。
+<br>天氣資料來源：<a href="https://open-meteo.com/" target="_blank">Open-Meteo.com</a></footer>
 
 <script>
 const DAYS = [
   {
-    id:1, date:"8/20（四）", route:"台灣桃園 → 岡山機場 → 廣島市",
+    id:1, date:"8/20（四）", isoDate:"2026-08-20", cities:["okayama","hiroshima"], route:"台灣桃園 → 岡山機場 → 廣島市",
     theme:"廣島酒場¥980暢飲初體驗、夜間唐吉訶德初探",
     info:[
       {label:"🏨 廣島住宿（第1/3晚）", value:"URBAIN HIROSHIMA EXECUTIVE", small:"地址：〒732-0053 広島県広島市東区若草町 16-13<br/>電話：082-567-6600"},
@@ -468,7 +470,7 @@ const DAYS = [
     ]
   },
   {
-    id:2, date:"8/21（五）", route:"宮島深度遊",
+    id:2, date:"8/21（五）", isoDate:"2026-08-21", cities:["hiroshima"], route:"宮島深度遊",
     theme:"彌山原始林能量景點、世界遺產嚴島神社參拜（退潮近觀鳥居 x 滿潮浮海雙景）",
     info:[
       {label:"🏨 廣島住宿（第2/3晚）", value:"URBAIN HIROSHIMA EXECUTIVE", small:"地址：〒732-0053 広島県広島市東区若草町 16-13<br/>電話：082-567-6600"},
@@ -614,7 +616,7 @@ const DAYS = [
     ]
   },
   {
-    id:3, date:"8/22（六）", route:"吳市鋼鐵軍魂 → 廣島市區巡禮",
+    id:3, date:"8/22（六）", isoDate:"2026-08-22", cities:["hiroshima"], route:"吳市鋼鐵軍魂 → 廣島市區巡禮",
     theme:"鐵鯨館、大和博物館、和平紀念公園與爆心地、EDION模型玩具放風",
     info:[
       {label:"🏨 廣島住宿（第3/3晚）", value:"URBAIN HIROSHIMA EXECUTIVE", small:"地址：〒732-0053 広島県広島市東区若草町 16-13<br/>電話：082-567-6600"},
@@ -731,7 +733,7 @@ const DAYS = [
     ]
   },
   {
-    id:4, date:"8/23（日）", route:"廣島 ➔ 尾道向島散策 ➔ 移防岡山 (溫羅祭狂歡)",
+    id:4, date:"8/23（日）", isoDate:"2026-08-23", cities:["hiroshima","okayama"], route:"廣島 ➔ 尾道向島散策 ➔ 移防岡山 (溫羅祭狂歡)",
     theme:"千光寺纜車、PEAK展望台、貓之細道、向島渡輪、溫羅祭總大舞",
     info:[
       {label:"🏨 岡山住宿（第1/2晚・連住）", value:"HOTEL LiVEMAX 岡山西口", small:"地址：〒700-0902 岡山市北区錦町 4-14<br/>電話：086-226-0080"},
@@ -909,7 +911,7 @@ const DAYS = [
     ]
   },
   {
-    id:5, date:"8/24（一）", route:"岡山 ➔ 廣島血拚日 ➔ 岡山",
+    id:5, date:"8/24（一）", isoDate:"2026-08-24", cities:["okayama","hiroshima"], route:"岡山 ➔ 廣島血拚日 ➔ 岡山",
     theme:"不動院國寶金堂、本通商店街 & SHAREO、廣島燒午餐、PARCO/福屋/SOGO百貨、海鮮/非海鮮晚餐雙線",
     info:[
       {label:"🏨 岡山住宿（第2/2晚・連住）", value:"HOTEL LiVEMAX 岡山西口", small:"地址：〒700-0902 岡山市北区錦町 4-14<br/>電話：086-226-0080"},
@@ -1031,7 +1033,7 @@ const DAYS = [
     ]
   },
   {
-    id:6, date:"8/25（二）", route:"悠閒早餐 → AEON MALL最後採買 → 平安返家",
+    id:6, date:"8/25（二）", isoDate:"2026-08-25", cities:["okayama"], route:"悠閒早餐 → AEON MALL最後採買 → 平安返家",
     theme:"輕鬆收尾——Grandir早餐、AEON MALL免稅衝刺、機場午餐與免稅店",
     info:[
       {label:"✈️ 回程航班", value:"虎航 IT215 (岡山 15:55發 ➔ 桃園 17:40抵)", small:"櫃檯：岡山機場 1F 虎航櫃檯 (14:55關櫃)"},
@@ -1284,7 +1286,7 @@ function buildDay(d){
 
   let html = `
     <div class="day-head">
-      <div class="date">${d.date}</div>
+      <div class="date">${d.date}${weatherInlineHtml(d)}</div>
       <div class="route">${d.route}</div>
       <div class="theme">🎯 ${d.theme}</div>
     </div>`;
@@ -1524,6 +1526,70 @@ try{
   customRate = Number(localStorage.getItem("customRate")||"0.215") || 0.215;
   isRateLocked = localStorage.getItem("isRateLocked") === "true";
 }catch(e){}
+
+const WEATHER_CITIES = {
+  hiroshima: { name:"廣島", lat:34.3853, lon:132.4553 },
+  okayama:   { name:"岡山", lat:34.6551, lon:133.9195 }
+};
+
+let weatherData = {};
+try{ weatherData = JSON.parse(localStorage.getItem("weatherCache") || "{}"); }catch(e){ weatherData = {}; }
+
+function getWeatherFor(city, isoDate){
+  const cityMap = weatherData[city];
+  return (cityMap && cityMap[isoDate]) ? cityMap[isoDate] : null;
+}
+function oneCityText(city, isoDate, fetchDone){
+  const w = getWeatherFor(city, isoDate);
+  const label = WEATHER_CITIES[city] ? WEATHER_CITIES[city].name : city;
+  if(w){
+    const popPart = (w.pop === "--") ? "" : `☔${w.pop}%`;
+    return `${label}🌡️${w.tmax}/${w.tmin}°C${popPart?" "+popPart:""}`;
+  }
+  return fetchDone ? `${label}📡` : `${label}…`;
+}
+function computeWeatherText(d, fetchDone){
+  if(!d.cities || !d.cities.length || !d.isoDate) return "";
+  return d.cities.map(c=> oneCityText(c, d.isoDate, fetchDone)).join(" ・ ");
+}
+function weatherInlineHtml(d){
+  if(!d.cities || !d.cities.length || !d.isoDate) return "";
+  return ` <span class="weather-inline" id="weather-${d.id}">｜ ${computeWeatherText(d,false)}</span>`;
+}
+function renderAllWeatherPills(fetchDone){
+  DAYS.forEach(d=>{
+    const el = document.getElementById("weather-"+d.id);
+    if(el) el.textContent = "｜ " + computeWeatherText(d, fetchDone);
+  });
+}
+
+function fetchWeatherAll(){
+  const isoDates = DAYS.map(d=>d.isoDate).filter(Boolean).sort();
+  if(!isoDates.length) return;
+  const startDate = isoDates[0], endDate = isoDates[isoDates.length-1];
+  const requests = Object.keys(WEATHER_CITIES).map(key=>{
+    const c = WEATHER_CITIES[key];
+    const url = `https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}`
+      + `&daily=temperature_2m_max,temperature_2m_min,precipitation_probability_max`
+      + `&timezone=Asia%2FTokyo&start_date=${startDate}&end_date=${endDate}`;
+    return fetch(url).then(res=>res.json()).then(data=>({key,data})).catch(err=>({key,error:err}));
+  });
+  Promise.all(requests).then(results=>{
+    let anySuccess = false;
+    results.forEach(r=>{
+      if(r.error || !r.data || !r.data.daily || !Array.isArray(r.data.daily.time)) return;
+      const daily = r.data.daily, cityMap = {};
+      daily.time.forEach((dateStr, idx)=>{
+        const tmax = daily.temperature_2m_max[idx], tmin = daily.temperature_2m_min[idx], pop = daily.precipitation_probability_max[idx];
+        if(tmax==null || tmin==null) return;
+        cityMap[dateStr] = { tmax:Math.round(tmax), tmin:Math.round(tmin), pop:(pop==null?"--":Math.round(pop)) };
+      });
+      if(Object.keys(cityMap).length){ weatherData[r.key] = cityMap; anySuccess = true; }
+    });
+    if(anySuccess){ try{ localStorage.setItem("weatherCache", JSON.stringify(weatherData)); }catch(e){} }
+    renderAllWeatherPills(true);
+  }).catch(()=> renderAllWeatherPills(true));
+}
 
 function toggleLockRate(){
   const lockEl = document.getElementById("calc-lock");
@@ -2129,6 +2195,7 @@ Object.keys(EDITABLE_LISTS).forEach(key=>{
 SHOP_CATEGORIES.forEach((cat,ci)=> renderShopList(ci));
 renderBudget();
 fetchLiveRate();
+fetchWeatherAll();
 Object.keys(EDITABLE_LISTS).forEach(key=> renderEditableList(key));
 
 const lastActiveId = localStorage.getItem("lastActiveId");
