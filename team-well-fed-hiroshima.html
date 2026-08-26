@@ -2210,12 +2210,29 @@ if(lastActiveId && lastActiveId !== "day-1" && document.getElementById(lastActiv
 }
 
 const ARCHIVE_KEYS = ["scheduleState_v2","expenseState","customRate","isRateLocked","editableState","shopState","shopEditState","fontTier"];
+function defaultArchiveName(){
+  const d = new Date();
+  const dateStr = d.getFullYear()+String(d.getMonth()+1).padStart(2,"0")+String(d.getDate()).padStart(2,"0");
+  const titleEl = document.querySelector("header.top h1");
+  const title = titleEl ? titleEl.textContent.trim() : "";
+  return `匯出-吃飽飽旅行團-${title}-${dateStr}`;
+}
 function confirmGenerateArchive(){
-  if(confirm("將把記帳、購物清單、敗家清單、隨手記、行前準備等所有資料連同照片，打包成一個可離線開啟的備份檔案，確定要產生嗎？")){
-    generateArchive();
-  }
+  openModal(`
+    <h3>產生完整封存版</h3>
+    <p style="font-size:0.813rem;color:var(--ink-soft);line-height:1.6;margin:0 0 14px;">將把記帳、購物清單、敗家清單、隨手記、行前準備等所有資料連同照片，打包成一個可離線開啟的備份檔案。</p>
+    <div class="modal-field"><label>檔名</label><input id="mf-archive-name" value="${escAttr(defaultArchiveName())}"/></div>
+    <div class="modal-btns">
+      <button class="mbtn-cancel" onclick="closeModal()">取消</button>
+      <button class="mbtn-save" onclick="generateArchive()">產生封存</button>
+    </div>
+  `);
 }
 function generateArchive(){
+  const nameInput = document.getElementById("mf-archive-name");
+  let filename = (nameInput ? nameInput.value.trim() : "") || defaultArchiveName();
+  filename = filename.replace(/[\\/:*?"<>|]/g, "_");
+  closeModal();
   fetch(location.href).then(res=>res.text()).then(html=>{
     const snapshot = {};
     ARCHIVE_KEYS.forEach(k=>{
@@ -2226,11 +2243,9 @@ function generateArchive(){
     const archived = html.replace('<meta charset="UTF-8"/>', '<meta charset="UTF-8"/>\n'+seedScript);
     const blob = new Blob([archived], {type:"text/html"});
     const url = URL.createObjectURL(blob);
-    const d = new Date();
-    const dateStr = d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
     const a = document.createElement("a");
     a.href = url;
-    a.download = `吃飽飽旅行團-完整封存-${dateStr}.html`;
+    a.download = `${filename}.html`;
     document.body.appendChild(a);
     a.click();
     a.remove();
