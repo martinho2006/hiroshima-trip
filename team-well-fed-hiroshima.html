@@ -2223,7 +2223,7 @@ function generateArchive(){
       if(v !== null) snapshot[k] = v;
     });
     const seedScript = `<script>(function(){var S=${JSON.stringify(snapshot)};for(var k in S){try{localStorage.setItem(k,S[k]);}catch(e){}}})();<\/script>`;
-    const archived = html.replace("<head>", "<head>\n"+seedScript);
+    const archived = html.replace('<meta charset="UTF-8"/>', '<meta charset="UTF-8"/>\n'+seedScript);
     const blob = new Blob([archived], {type:"text/html"});
     const url = URL.createObjectURL(blob);
     const d = new Date();
